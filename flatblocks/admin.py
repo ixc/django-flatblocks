@@ -1,9 +1,25 @@
 from django.contrib import admin
+from django.utils.html import strip_tags
+from django.utils.text import truncate_words
+from django.template.defaultfilters import striptags
+
 from flatblocks.models import FlatBlock
  
 class FlatBlockAdmin(admin.ModelAdmin):
-    ordering = ['slug',]
-    list_display = ('slug', 'header', 'content')
-    search_fields = ('slug', 'header', 'content')
+    """ Project-specific alterations -- no headers, no adding, fixed slugs. """
+    list_display = ('slug', 'content_summary')
+    readonly_fields = ('slug',)
+    fields = ('slug', 'content')
+    search_fields = ('slug', 'content')
+    actions = None
+
+    def content_summary(self, block):
+        return truncate_words(strip_tags(block.content), 25)
+    
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 admin.site.register(FlatBlock, FlatBlockAdmin)
