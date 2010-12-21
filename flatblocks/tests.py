@@ -1,5 +1,8 @@
 from django import template
+from django.template import loader
+from django.template.loaders import app_directories
 from django.test import TestCase
+from django.conf import settings as djangosettings
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django import db
@@ -7,8 +10,28 @@ from django import db
 from flatblocks.models import FlatBlock
 from flatblocks import settings
 
+class TemplateIsolatedTestCase(TestCase):
+    def setUp(self):
+        # Remove filesystem loader from template loaders so that overridden
+        # "css.html" templates don't interfere with the tests.
+        self._old_TEMPLATE_LOADERS = djangosettings.TEMPLATE_LOADERS
+        loaders = list(djangosettings.TEMPLATE_LOADERS)
+        try:
+            loaders.remove('django.template.loaders.filesystem.Loader')
+            djangosettings.TEMPLATE_LOADERS = loaders
+        except ValueError:
+            pass
+        # Refresh template cache
+        reload(app_directories)
+        loader.template_source_loaders = None
+    
+    def tearDown(self):
+        djangosettings.TEMPLATE_LOADERS = self._old_TEMPLATE_LOADERS
+        # Refresh template cache
+        reload(app_directories)
+        loader.template_source_loaders = None
 
-class BasicTests(TestCase):
+class BasicTests(TemplateIsolatedTestCase):
     urls = 'flatblocks.urls'
 
     def setUp(self):
@@ -18,6 +41,7 @@ class BasicTests(TestCase):
              content='CONTENT'
         )
         self.admin = User.objects.create_superuser('admin', 'admin@localhost', 'adminpwd')
+        super(BasicTests, self).setUp()
 
     def testURLConf(self):
         # We have to support two different APIs here (1.1 and 1.2)
@@ -50,13 +74,14 @@ class BasicTests(TestCase):
         self.assertRaises(db.IntegrityError, block.save, force_insert=True)
 
 
-class TagTests(TestCase):
+class TagTests(TemplateIsolatedTestCase):
     def setUp(self):
         self.testblock = FlatBlock.objects.create(
              slug='block',
              header='HEADER',
              content='CONTENT'
         )
+        super(TagTests, self).setUp()
 
     def testLoadingTaglib(self):
         """Tests if the taglib defined in this app can be loaded"""
@@ -98,7 +123,7 @@ class TagTests(TestCase):
         tpl.render(template.Context({'blockvar': 'block'}))
 
 
-class AutoCreationTest(TestCase):
+class AutoCreationTest(TemplateIsolatedTestCase):
     """ Test case for block autcreation """
 
     def testMissingStaticBlock(self):
