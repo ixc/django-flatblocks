@@ -6,9 +6,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
 
 msgid "You are not allowed to edit this flatblock"
 msgstr "Du darfst diesen Flatblock nicht editieren"
@@ -27,4 +24,10 @@ msgstr "Ein eindeutiger Name, über den dieser Block in Templates referenziert w
 
 msgid "An optional header for this content"
 msgstr "Eine optionale Überschrift für diesen Block"
+
+msgid "Flat block"
+msgstr "Flatblock"
+
+msgid "Flat blocks"
+msgstr "Flatblocks"
 
