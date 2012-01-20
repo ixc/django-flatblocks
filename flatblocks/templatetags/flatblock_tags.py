@@ -241,9 +241,10 @@ class FlatBlockNode(template.Node):
                     try:
                         flatblock = FlatBlock.objects.get(slug=real_slug)
                     except FlatBlock.DoesNotExist:
-                        flatblock = FlatBlock.objects.create(slug=real_slug,
-                            content=real_default_contents or real_slug,
-                            header=real_default_header)
+                        flatblock = FlatBlock.objects.create(
+                            slug=real_slug,
+                            content=real_default_contents or real_slug
+                        )
                         flatblock.save()
                         flatblock_created = True
 
@@ -252,9 +253,6 @@ class FlatBlockNode(template.Node):
                 # with the default contents.
                 flatblock_updated = False
                 if not flatblock_created and settings.STRICT_DEFAULT_CHECK:
-                    if not flatblock.header and not real_default_header is None:
-                        flatblock.header = real_default_header
-                        flatblock_updated = True
                     if not flatblock.content and self.default_content:
                         flatblock.content = real_default_contents or real_slug
                         flatblock_updated = True
@@ -278,7 +276,8 @@ class FlatBlockNode(template.Node):
         except FlatBlock.DoesNotExist:
             if real_default_contents:
                 flatblock = FlatBlock(slug=real_slug,
-                    content=real_default_contents, header=real_default_header)
+                    content=real_default_contents
+                )
                 return self.flatblock_output(real_template, flatblock, new_ctx)
             return ''
 
