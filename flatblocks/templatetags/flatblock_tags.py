@@ -30,12 +30,12 @@ Example::
     {% flatblock 'contact_help' %}
     {% flatblock name_in_variable %}
 
-The 'flatblock' template tag acts like an inclusiontag and operates on the
+The 'flatblock' template tag acts like an inclusion tag and operates on the
 ``flatblock/flatblock.html`` template file, which gets (besides the global
 context) also the ``flatblock`` variable passed.
 
 Compared to the original implementation this includes not only the block's
-content but the whole object inclusing title, slug and id. This way you
+content but the whole object including title, slug and id. This way you
 can easily for example offer administrative operations (like editing)
 within that template.
 
