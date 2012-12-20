@@ -17,7 +17,7 @@ class FlatBlockAdmin(admin.ModelAdmin):
 
     def content_summary(self, block):
         return truncate_words(strip_tags(block.content), 25)
-    
+
     def has_add_permission(self, request):
         return False
 
