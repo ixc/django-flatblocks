@@ -1,4 +1,7 @@
-from django.conf.urls.defaults import patterns, url
+try:
+    from django.conf.urls.defaults import patterns, url
+except ImportError:
+    from django.conf.urls.defaults import patterns, url
 from django.contrib.admin.views.decorators import staff_member_required
 from flatblocks.views import edit
 

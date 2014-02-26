@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.utils.html import strip_tags
-from django.utils.text import truncate_words
+try:
+    from django.utils.text import Truncator as truncate_words
+except ImportError:
+    from django.utils.text import truncate_words
 from django.template.defaultfilters import striptags
 
 from flatblocks.models import FlatBlock

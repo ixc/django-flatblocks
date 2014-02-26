@@ -90,7 +90,7 @@ class TagTests(TemplateIsolatedTestCase):
 
     def testExistingPlain(self):
         tpl = template.Template('{% load flatblock_tags %}{% plain_flatblock "block" %}')
-        self.assertEqual(u'CONTENT', tpl.render(template.Context()).strip())
+        self.assertEqual('CONTENT', tpl.render(template.Context()).strip())
 
     def testExistingTemplate(self):
         expected = """<div class="flatblock block-block">
