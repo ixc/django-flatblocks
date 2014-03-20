@@ -1,6 +1,6 @@
 try:
-    from django.conf.urls.defaults import patterns, url
-except ImportError:
+    from django.conf.urls import patterns, url, include
+except ImportError:  # Django < 1.4
     from django.conf.urls.defaults import patterns, url
 from django.contrib.admin.views.decorators import staff_member_required
 from flatblocks.views import edit
