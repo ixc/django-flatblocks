@@ -231,11 +231,9 @@ class FlatBlockNode(template.Node):
             if flatblock is None:
                 flatblock_created = False
 
-                # if flatblock's slug is hard-coded in template then it is
-                # safe and convenient to auto-create block if it doesn't exist.
-                # This behaviour can be configured using the
-                # FLATBLOCKS_AUTOCREATE_STATIC_BLOCKS setting
-                if self.is_variable or not settings.AUTOCREATE_STATIC_BLOCKS:
+                # if the FLATBLOCKS_AUTOCREATE_STATIC_BLOCKS setting is True,
+                # auto-create block if it doesn't exist.
+                if not settings.AUTOCREATE_STATIC_BLOCKS:
                     flatblock = FlatBlock.objects.get(slug=real_slug)
                 else:
                     try:
